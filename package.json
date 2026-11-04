@@ -1,16 +1,15 @@
+
 {
-"name": "bro-ai-agent",
-"version": "1.5.0",
-"description": "BRO AI AGENT Backend",
-"main": "server.js",
-"scripts": {
-"start": "node server.js"
-},
-"dependencies": {
-"express": "^5.1.0",
-"cors": "^2.8.5",
-"openai": "^5.0.0",
-"helmet": "^8.1.0",
-"express-rate-limit": "^8.1.0"
-}
+  "name": "bro-ai-agent",
+  "version": "1.5.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^8.1.0",
+    "openai": "^5.0.0"
+  }
 }
