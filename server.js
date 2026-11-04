@@ -14,16 +14,18 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  if (req.method === "OPTIONS") return res.sendStatus(204);
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
   next();
 });
 
-const limiter = rateLimit({
+app.use("/api/", rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 30
-});
-
-app.use("/api/", limiter);
+}));
 
 app.get("/", (req, res) => {
   res.json({
@@ -46,9 +48,9 @@ app.post("/api/chat", async (req, res) => {
     }
 
     if (!process.env.OPENAI_API_KEY) {
-      return res.status(503).json({
+      return res.status(500).json({
         success: false,
-        error: "API key belum dipasang"
+        error: "OPENAI_API_KEY belum dipasang"
       });
     }
 
@@ -61,7 +63,7 @@ app.post("/api/chat", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: "Kamu adalah BRO AI AGENT, asisten AI yang ramah dan membantu."
+          content: "Kamu adalah BRO AI AGENT, asisten AI yang ramah dan pintar. Jawab pengguna dalam bahasa Indonesia."
         },
         {
           role: "user",
@@ -76,10 +78,11 @@ app.post("/api/chat", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("BRO AI ERROR:", error);
+
     res.status(500).json({
       success: false,
-      error: "Terjadi kesalahan pada server"
+      error: "Terjadi kesalahan pada BRO AI AGENT"
     });
   }
 });
@@ -87,4 +90,3 @@ app.post("/api/chat", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`BRO AI AGENT berjalan di port ${PORT}`);
 });
-
